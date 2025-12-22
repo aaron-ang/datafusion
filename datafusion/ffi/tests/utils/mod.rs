@@ -15,14 +15,15 @@
 // specific language governing permissions and limitations
 // under the License.
 
-use std::sync::Arc;
+#[cfg(feature = "integration-tests")]
+use {
+    datafusion::prelude::SessionContext, datafusion_execution::TaskContextProvider,
+    datafusion_ffi::execution::FFI_TaskContextProvider,
+    datafusion_ffi::proto::logical_extension_codec::FFI_LogicalExtensionCodec,
+    datafusion_proto::logical_plan::DefaultLogicalExtensionCodec, std::sync::Arc,
+};
 
-use datafusion::prelude::SessionContext;
-use datafusion_execution::TaskContextProvider;
-use datafusion_ffi::execution::FFI_TaskContextProvider;
-use datafusion_ffi::proto::logical_extension_codec::FFI_LogicalExtensionCodec;
-use datafusion_proto::logical_plan::DefaultLogicalExtensionCodec;
-
+#[cfg(feature = "integration-tests")]
 pub fn ctx_and_codec() -> (Arc<SessionContext>, FFI_LogicalExtensionCodec) {
     let ctx = Arc::new(SessionContext::default());
     let task_ctx_provider = Arc::clone(&ctx) as Arc<dyn TaskContextProvider>;
